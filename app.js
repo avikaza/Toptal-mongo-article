@@ -1,20 +1,27 @@
-
-/**
- * Module dependencies
- */
-
 var express = require('express'),
-  bodyParser = require('body-parser'),
-  methodOverride = require('method-override'),
-  errorHandler = require('error-handler'),
-  morgan = require('morgan'),
   routes = require('./routes'),
-  api = require('./routes/api'),
   http = require('http'),
   path = require('path');
 
+var logger = require('morgan');
+var mongoskin = require('mongoskin');
 var app = module.exports = express();
 
+app.engine('html', require('ejs').renderFile);
+
+var db = mongoskin.db('mongodb://avinash:techxplorers@localhost/airpair', {safe:true});
+
+app.param('collectionName', function(req, res, next, collectionName){
+  req.collection = db.collection(collectionName)
+  return next()
+});
+
+app.get('/collections/:collectionName', function(req, res) {
+  req.collection.find({},{}).toArray(function(e, results){
+    if (e) return next(e)
+    res.send(results)
+  });
+});
 
 /**
  * Configuration
@@ -22,18 +29,16 @@ var app = module.exports = express();
 
 // all environments
 app.set('port', process.env.PORT || 3000);
-app.set('views', __dirname + '/views');
-app.set('view engine', 'jade');
-app.use(morgan('dev'));
-app.use(bodyParser());
-app.use(methodOverride());
+app.set('views', __dirname + '/public');
+app.set('view engine', 'html');
+app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 var env = process.env.NODE_ENV || 'development';
 
 // development only
 if (env === 'development') {
-  app.use(express.errorHandler());
+	 
 }
 
 // production only
@@ -41,20 +46,17 @@ if (env === 'production') {
   // TODO
 }
 
+app.get('/', function (request,response){
+	response.render('index.html');
+});
 
 /**
  * Routes
  */
 
 // serve index and view partials
-app.get('/', routes.index);
-app.get('/partials/:name', routes.partials);
-
-// JSON API
-app.get('/api/name', api.name);
-
-// redirect all others to the index (HTML5 history)
-app.get('*', routes.index);
+//app.get('/', routes.index);
+//app.get('/partials/:name', routes.partials);
 
 
 /**
