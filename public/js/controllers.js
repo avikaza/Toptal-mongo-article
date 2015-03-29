@@ -7,7 +7,7 @@ angular.module('myApp.controllers', []).
 
     $http({
       method: 'GET',
-      url: '/api/name'
+      url: 'http://52.10.36.38:3000/collections/faculty'
     }).
     success(function (data, status, headers, config) {
       $scope.name = data.name;
