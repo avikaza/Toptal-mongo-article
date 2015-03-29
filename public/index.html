@@ -3,24 +3,29 @@
 
 <head>
 
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
-<script src="js/lib/angular/angular.min.js"></script>
-<script src="js/lib/angular/angular-resource.min.js"></script>
-<script src="js/lib/angular/angular-bootstrap.min.js"></script>
-<script src="js/app.js"></script>
-<script src="js/controllers.js"></script>
-<script src="js/services.js"></script>
-<script src="js/filters.js"></script>
-<script src="js/directives.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="http://angular-ui.github.com/ng-grid/css/ng-grid.css" />
+    <link href="css/app.css" type="text/css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+    <script src="js/lib/angular/angular.min.js"></script>
+    <script src="js/lib/angular/angular-resource.min.js"></script>
+    <script src="js/lib/angular/angular-bootstrap.min.js"></script>
+    <script type="text/javascript" src="http://angular-ui.github.com/ng-grid/lib/ng-grid.debug.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/controllers.js"></script>
+    <script src="js/services.js"></script>
+    <script src="js/filters.js"></script>
+    <script src="js/directives.js"></script>
+    <script src="js/valueObjects/record.js"></script>
 </head>
 
 <body ng-app="myApp">
-<h2></h2>
-    <div class="view-container">
+<div ng-controller="AppCtrl">
+    <!--<div class="view-container">
         <div class="container-fluid" ng-include="'faculty.html'"></div>
-        
-    </div>
-    
-    
+    </div>-->
+    <div id="link"></div>
+    <div class="ngGridStyle" ng-grid="ngGridView"></div>
+</div>
 </body>
 </html>
