@@ -64,10 +64,28 @@ app.get('/collections/payroll', function(request, response) {
 	} else if(docs) {
 		response.send(docs);
 	} else {
-		response.send('Error : Failed to get faculty data.');
+		response.send('Error : Failed to get payroll data.');
 	}
    });
 });
+
+app.get('/aggregate/payroll', function(request, response) {
+	Payroll.aggregate([
+		{ $group: { _id: "$State", ftp: { $sum: "$FullTimePay" } } },
+   		{ $match: { ftp: { $gte: 1000*1000*1000 } } },
+   		{ $sort: { ftp: 1 } }
+	] , function (err, result){
+		if(err) {
+			response.send("Error :"+err.toString());
+		} else if(result) {
+			response.send(result);
+		}else{
+			response.send('Error : Failed to aggregate payroll data.');
+		}
+		return;
+	});
+});
+
 /**
  * Configuration
  */
