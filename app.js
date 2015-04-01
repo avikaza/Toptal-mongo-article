@@ -4,25 +4,70 @@ var express = require('express'),
   path = require('path');
 
 var logger = require('morgan');
-var mongoskin = require('mongoskin');
+var mongoose = require('mongoose');
 var app = module.exports = express();
 
 app.engine('html', require('ejs').renderFile);
 
-var db = mongoskin.db('mongodb://avinash:techxplorers@localhost/airpair', {safe:true});
+mongoose.connect('mongodb://avinash:techxplorers@localhost/airpair');
+var db = mongoose.connection,
+	Faculty,
+	Payroll;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function callback() {
+	var FacultySchema = mongoose.Schema({
+		Institution : String,
+		Category : String,
+		State : String,
+		Position : String,
+		AvgSalary : Number,
+		AvgRaisePCT : Number,
+		Count : Number,
+		AvgCompensation : Number,
+		SalaryEqualityPCT : Number
+	}, {collection: 'faculty'});
+	Faculty = db.model('faculty', FacultySchema);
 
-app.param('collectionName', function(req, res, next, collectionName){
-  req.collection = db.collection(collectionName)
-  return next()
+	var PayrollSchema = mongoose.Schema({
+		State : String,
+		GovernmentFunction : String,
+		FullTimeEmployees : Number,
+		VariationPCT : Number,
+		FullTimePay : Number, 
+		PartTimeEmployees : Number,
+		PartTimePay : Number, 
+		PartTimeHours : Number,
+		FullTimeEquivalentEmployment : Number,
+		TotalEmployees : Number,
+		TotalMarchPay : Number
+	}, {collection: 'payroll'});
+	Payroll = db.model('payroll', PayrollSchema);
 });
 
-app.get('/collections/:collectionName', function(req, res) {
-  req.collection.find({},{}).toArray(function(e, results){
-    if (e) return next(e)
-    res.send(results)
-  });
+
+app.get('/collections/faculty', function(request, response) {
+   Faculty.find(function (err, docs) {
+       if(err) {
+		response.send("Error :"+err.toString());
+	} else if(docs) {
+		response.send(docs);
+	} else {
+		response.send('Error : Failed to get faculty data.');
+	}
+   });
 });
 
+app.get('/collections/payroll', function(request, response) {
+   Payroll.find(function (err, docs) {
+       if(err) {
+		response.send("Error :"+err.toString());
+	} else if(docs) {
+		response.send(docs);
+	} else {
+		response.send('Error : Failed to get faculty data.');
+	}
+   });
+});
 /**
  * Configuration
  */
