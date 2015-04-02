@@ -1,0 +1,12 @@
+<form action="/aggregate" method="post">
+	<label for="collection"><b>Choose a collection : </b></label>
+	<select name="collection" id="collection">
+		<option value="Faculty">Faculty</option>
+		<option value="Payroll">Payroll</option>
+	</select>
+	<br><br/>
+	<label for="statement" style="vertical-align:middle;"><b>Enter your query:</b></label>
+	<textarea style="vertical-align:middle;" rows="10" cols="50" id="statement" name="statement" placeholder="Enter aggregation statement here"></textarea>
+	<br><br/>
+	<button type="submit">Submit</button>
+</form>

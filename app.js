@@ -1,5 +1,6 @@
 var express = require('express'),
   routes = require('./routes'),
+  bodyParser = require('body-parser'),
   http = require('http'),
   path = require('path');
 
@@ -44,6 +45,7 @@ db.once('open', function callback() {
 	Payroll = db.model('payroll', PayrollSchema);
 });
 
+app.use(bodyParser());
 
 app.get('/collections/faculty', function(request, response) {
    Faculty.find(function (err, docs) {
@@ -67,23 +69,6 @@ app.get('/collections/payroll', function(request, response) {
 		response.send('Error : Failed to get payroll data.');
 	}
    });
-});
-
-app.get('/aggregate/payroll', function(request, response) {
-	Payroll.aggregate([
-		{ $group: { _id: "$State", ftp: { $sum: "$FullTimePay" } } },
-   		{ $match: { ftp: { $gte: 1000*1000*1000 } } },
-   		{ $sort: { ftp: 1 } }
-	] , function (err, result){
-		if(err) {
-			response.send("Error :"+err.toString());
-		} else if(result) {
-			response.send(result);
-		}else{
-			response.send('Error : Failed to aggregate payroll data.');
-		}
-		return;
-	});
 });
 
 /**
@@ -111,6 +96,37 @@ if (env === 'production') {
 
 app.get('/', function (request,response){
 	response.render('index.html');
+});
+
+app.get('/aggregate', function (request,response){
+	response.render('aggregate.html');
+});
+
+app.post('/aggregate', function (request,response){
+	var query = request.body.statement;
+	var model = request.body.collection;
+	var json = eval('('+query+')');
+	if(model == 'Payroll'){
+		Payroll.aggregate(json, function (err, result){
+			if(err) {
+				response.send("Error :"+err.toString());
+			} else if(result) {
+				response.send(result);
+			}else{
+				response.send('Error : Failed to aggregate payroll data.');
+			}
+		});
+	}else{
+		Faculty.aggregate(json, function (err, result){
+			if(err) {
+				response.send("Error :"+err.toString());
+			} else if(result) {
+				response.send(result);
+			}else{
+				response.send('Error : Failed to aggregate payroll data.');
+			}
+		});
+	}
 });
 
 /**
