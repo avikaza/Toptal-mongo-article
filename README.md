@@ -5,7 +5,7 @@ Code for AirPair article to explain MongoDBs Aggregation Pipelines
 Steps to setup the application on your machine (from the command prompt):
 
 
-1. git clone https://github.com/avikaza/AirPair-article
+1. git clone https://github.com/avikaza/Toptal-mongo-article
 2. cd to the directory where the repo was cloned. "cd xxxxxxx/airpair"
 3. Run "npm install". This will update/install all the required modules locally.
 4. Run "node app.js" to run the application locally.
