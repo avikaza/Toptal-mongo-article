@@ -33,3 +33,64 @@
     width: 100%;
     height: 600px;
 }
+
+.stagebody {
+    height:150px;
+}
+
+.stagebody > div > textarea {
+    width:100%;
+    height: inherit;
+}
+
+.stagebody > div {
+    width:50%;
+    height:inherit;
+    float:left;
+    padding-right:10px;
+}
+
+.stagebody > div:last-child {
+    padding:10px;
+    box-sizing: border-box;
+    overflow:auto;
+    border:1px solid #888888;
+}
+
+.clear{clear: both}
+.metaInfo{
+    background-color: #F5F5F5;
+    width: 100%;
+    color: #bcbcbc;
+}
+.metaInfo span{
+    padding-right: 20px;
+
+}
+body{
+    padding: 20px;
+}
+.headerStyle{
+    background-color: #C1C1C1; color: #000000; padding: 5px;
+}
+.headerStyle select{color: black; width: 100px;}
+
+select {
+    -webkit-appearance: button;
+    -webkit-border-radius: 2px;
+    -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+    -webkit-padding-end: 20px;
+    -webkit-padding-start: 2px;
+    -webkit-user-select: none;
+    background-image: url(http://i62.tinypic.com/15xvbd5.png), -webkit-linear-gradient(#fafafa, #f4f4f4 40%, #e5e5e5);
+    background-position: 97% center;
+    background-repeat: no-repeat;
+    border: 1px solid #AAA;
+    color: #555;
+    font-size: inherit;
+    margin: 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 300px;
+]

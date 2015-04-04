@@ -1,10 +1,21 @@
 'use strict';
+Array.prototype.move = function (old_index, new_index) {
+    if (new_index >= this.length) {
+        var k = new_index - this.length;
+        while ((k--) + 1) {
+            this.push(undefined);
+        }
+    }
+    this.splice(new_index, 0, this.splice(old_index, 1)[0]);
+    return this; // for testing purposes
+};
 app.controller('AppCtrl', function ($scope, $http) {
     $scope.records = [];
     $scope.sourceRecords = [];
     $scope.csvHTMLTemplateLink = "";
     $scope.totalServerItems = 0;
     $scope.pageSize = 50;
+    $scope.schemaType = "Faculty";
     $scope.pagingOptions = {
         pageSizes: [],
         pageSize: $scope.pageSize,
@@ -14,42 +25,40 @@ app.controller('AppCtrl', function ($scope, $http) {
         filterText: "",
         useExternalFilter: true
     };
-    $scope.loadData = function() {
-        var httpRequest = $http({
-            method: 'GET',
-            url: 'http://52.10.36.38:3000/collections/faculty'
-        }).success(function(data, status) {
-            var i, record;
-            for(var i = 0; i < data.length; i = i + 1){
-                record = new Record();
-                $scope.sourceRecords.push(record.translateAttributes(i, data[i]));
-            }
-            $scope.filterData(0, $scope.pageSize);
-            $scope.setPagingData($scope.sourceRecords,1,100);
-            $scope.showCVSExportDownloadLink();
-        });
-    };
-
     $scope.filterData = function(startIndex, endIndex){
         $scope.records = $scope.sourceRecords.filter(function (el) {
             return (el.index >= startIndex && el.index <= endIndex - 1);
         });
     }
 
-    $scope.myColumns = [{ field: 'institution', displayName: 'Institution'},
-        { field: 'category', displayName: 'Category' },
-        { field: 'state', displayName: 'State' },
-        { field: 'position', displayName: 'Position'},
-        { field: 'avgSalary', displayName: 'AvgSalary' },
-        { field: 'avgRaisePCT', displayName: 'AvgRaisePCT' },
-        { field: 'count', displayName: 'Count'},
-        { field: 'avgCompensation', displayName: 'AvgCompensation' },
-        { field: 'salaryEqualityPCT', displayName: 'SalaryEqualityPCT' }
+    $scope.facultySchema = [{ field: 'institution', displayName: 'Institution', type: 'String'},
+        { field: 'category', displayName: 'Category', type: 'String'},
+        { field: 'state', displayName: 'State', type: 'String'},
+        { field: 'position', displayName: 'Position', type: 'String'},
+        { field: 'avgSalary', displayName: 'AvgSalary', type: 'Number'},
+        { field: 'avgRaisePCT', displayName: 'AvgRaisePCT', type: 'Number'},
+        { field: 'count', displayName: 'Count', type: 'Number'},
+        { field: 'avgCompensation', displayName: 'AvgCompensation', type: 'Number'},
+        { field: 'salaryEqualityPCT', displayName: 'SalaryEqualityPCT', type: 'Number'}
     ];
+
+    $scope.payRollSchema = [{ field: 'State', displayName: 'State', type: 'String'},
+        { field: 'GovernmentFunction', displayName: 'GovernmentFunction', type: 'String'},
+        { field: 'FullTimeEmployees', displayName: 'FullTimeEmployees', type: 'Number'},
+        { field: 'VariationPCT', displayName: 'VariationPCT', type: 'Number'},
+        { field: 'FullTimePay', displayName: 'FullTimePay', type: 'Number'},
+        { field: 'PartTimeEmployees', displayName: 'PartTimeEmployees', type: 'Number'},
+        { field: 'PartTimePay', displayName: 'PartTimePay', type: 'Number'},
+        { field: 'PartTimeHours', displayName: 'PartTimeHours', type: 'Number'},
+        { field: 'FullTimeEquivalentEmployment', displayName: 'FullTimeEquivalentEmployment', type: 'Number'},
+        { field: 'TotalEmployees', displayName: 'TotalEmployees', type: 'Number'},
+        { field: 'TotalMarchPay', displayName: 'TotalMarchPay', type: 'Number'}
+    ];
+
     $scope.ngGridView = {
         data: 'records',
         showFooter: true,
-        columnDefs: 'myColumns',
+        columnDefs: 'facultySchema',
         enablePaging: true,
         totalServerItems: 'totalServerItems',
         pagingOptions: $scope.pagingOptions,
@@ -131,5 +140,128 @@ app.controller('AppCtrl', function ($scope, $http) {
         $("#link").append(csvHTMLTemplateLink);
     }
 
-    $scope.loadData();
+});
+
+app.controller('QueryController', function ($scope, $http) {
+    $scope.commandList = [
+        {
+            name: "Project",
+            command: "$project"
+        },
+        {
+            name: "Match",
+            command: "$match"
+        },
+        {
+            name: "Group",
+            command: "$group"
+        },
+        {
+            name: "Limit",
+            command: "$limit"
+        },
+        {
+            name: "Skip",
+            command: "$skip"
+        }
+    ];
+    $scope.commandHelp = {
+        "project": [
+            {
+                text: '{ $project : { Institution : "institution name" , AvgSalary : 5000 } } ',
+                url: "http://docs.mongodb.org/manual/reference/operator/aggregation/project/#pipe._S_project"
+            }
+        ],
+        "match": [
+            {
+                text: "Sample query 2",
+                url: "http:://test2.com"
+            }
+        ],
+        "group": [
+            {
+                text: "Sample query 3",
+                url: "http:://test3.com"
+            }
+        ],
+        "limit": [
+            {
+                text: "Sample query 4",
+                url: "http:://test4.com"
+            }
+        ],
+        "skip": [
+            {
+                text: "Sample query 5aa",
+                url: "http:://test5.com"
+            },
+            {
+                text: "Sample query 5bb",
+                url: "http:://test5.com"
+            },
+            {
+                text: "Sample query 5cc",
+                url: "http:://test5.com"
+            },
+            {
+                text: "Sample query 5dd",
+                url: "http:://test5.com"
+            },
+            {
+                text: "Sample query 5ee",
+                url: "http:://test5.com"
+            }
+        ]
+    };
+    $scope.groups = [
+        {
+            stageCommand: "$project",
+            stageName: "",
+            stageQuery: "",
+            open: true
+        }
+    ];
+
+    $scope.stopExpanding = function(e){
+        if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+    }
+    $scope.changeIndex = function(idx, option){
+        if(option === "up" && idx > 0){
+            $scope.groups.move(idx, idx - 1);
+        }else if(option === "down" && idx < $scope.groups.length - 1) {
+            $scope.groups.move(idx, idx + 1);
+        }
+    };
+    $scope.deletequery = function(idx, e){
+        $scope.groups.splice(idx, 1);
+    };
+    $scope.addNewStage = function(){
+        $scope.groups.push({
+            stageCommand: "$project",
+            stageName: "",
+            stageQuery: "",
+            open: true
+        });
+    }
+    $scope.runAggregation = function () {
+        $scope.loadData();
+    }
+    $scope.loadData = function() {
+        var httpRequest = $http({
+            method: 'GET',
+            url: 'http://52.10.36.38:3000/collections/faculty'
+        }).success(function(data, status) {
+            var i, record;
+            for(var i = 0; i < data.length; i = i + 1){
+                record = new Record();
+                $scope.sourceRecords.push(record.translateAttributes(i, data[i]));
+            }
+            $scope.filterData(0, $scope.pageSize);
+            $scope.setPagingData($scope.sourceRecords,1,100);
+            $scope.showCVSExportDownloadLink();
+        });
+    };
 });
