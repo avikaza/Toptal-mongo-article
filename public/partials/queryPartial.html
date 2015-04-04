@@ -33,9 +33,15 @@
             </accordion-body>
         </accordion-group>
      </accordion>
-    <div style="border-bottom: 1px solid #c8c8c8;text-align: right; padding-bottom: 2px">
-        <button ng-click="addNewStage()">Add new stage</button>
-        <button ng-click="runAggregation()">Run Aggregation</button>
-    </div>
+    <div style="border-bottom: 1px solid #c8c8c8;text-align: right; padding-bottom: 2px" class="pull-right">
+        <button class="btn btn-primary btn-xs" ng-click="addNewStage()">Add new stage</button>
+        <button class="btn btn-primary btn-xs" ng-click="runAggregation()">Run Aggregation</button>
 
+    </div>
+<div class="container pull-left">
+      <button class="btn btn-success btn-xs" data-toggle="collapse" data-target="#queries">Aggregate Queries</button>
+      <div id="queries" class="collapse"></br>
+        <textarea class="active primary"cols="70%" name="query"></textarea>
+      </div></div>
+    
 </div>

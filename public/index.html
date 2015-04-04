@@ -24,6 +24,7 @@
 </head>
 
 <body ng-app="myApp">
+<h2 class="well">Page header goes here!</h2>
 <div ng-controller="AppCtrl">
     <div class="headerStyle">
         <label for="collection"><b>Choose a collection: </b></label>
@@ -33,18 +34,46 @@
         </select>
     </div>
         <div class="metaInfo" ng-if="schemaType == 'Faculty'">
-            <span style="font-weight: bold">Faculty Schema: </span>
-            <span ng-repeat="facultyObj in facultySchema">{{facultyObj.displayName}}< {{facultyObj.type}}></span>
-        </div>
-
+            <div class ="row">
+                <div class="col-xs-12">
+                    <span class="text-info" style="font-weight: bold">Faculty Schema: </span>
+                </div>
+            </div>
+            <div class ="row">
+                    <div class="col-xs-12">
+                        <span ng-repeat="facultyObj in facultySchema" class="text-primary"><strong>{{facultyObj.displayName}}: </strong>
+                        <span class="text-success">{{facultyObj.type}}</span>
+                        </span>
+                    </div>
+            </div>
+    </div>
     <div class="metaInfo" ng-if="schemaType == 'Payroll'">
-        <span style="font-weight: bold">Payroll Schema: </span>
-        <span ng-repeat="payRollObj in payRollSchema">{{payRollObj.displayName}}< {{payRollObj.type}}></span>
+
+                <div class ="row">
+                <div class="col-xs-12">
+                    <span class="text-info" style="font-weight: bold">Payroll Schema: </span>
+                </div>
+            </div>
+            <div class ="row">
+                    <div class="col-xs-12">
+                        <span ng-repeat="payRollObj in payRollSchema" class="text-primary"><strong>{{payRollObj.displayName}}: </strong>
+                        <span class="text-success">{{payRollObj.type}}</span>
+                        </span>
+                    </div> 
+            </div>
+
     </div>
     <div ng-include="'partials/queryPartial.html'"></div>
-    <h1>Results</h1>
-    <div id="link"></div>
-    <div class="ngGridStyle" ng-grid="ngGridView"></div>
-</div>
+    
+    <div class="clear"></div>
+    
+    <span ng-if="records.length>0">
+        <h1>Results</h1>
+        <div id="link"></div>
+        <div class="ngGridStyle" ng-grid="ngGridView"></div>
+        </div>
+    </span>
+    
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 </body>
 </html>

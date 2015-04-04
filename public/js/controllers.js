@@ -163,42 +163,50 @@ app.controller('QueryController', function ($scope, $http) {
         {
             name: "Skip",
             command: "$skip"
+        },
+        {
+            name: "Sort",
+            command: "$sort"
         }
     ];
     $scope.commandHelp = {
         "project": [
             {
-                text: '{ $project : { Institution : "institution name" , AvgSalary : 5000 } } ',
+                text: '{ $project : { Institution : "institution name" , AvgSalary : 5000 } }',
                 url: "http://docs.mongodb.org/manual/reference/operator/aggregation/project/#pipe._S_project"
             }
         ],
         "match": [
             {
-                text: "Sample query 2",
-                url: "http:://test2.com"
+                text: '{ $match: { ftp: { $gte: 100*1000 } } }',
+                url: "http://docs.mongodb.org/manual/reference/operator/aggregation/match/"
             }
         ],
         "group": [
             {
-                text: "Sample query 3",
-                url: "http:://test3.com"
+                text: '{ $group: { _id: "$State", ftp: { $sum: "$AvgSalary" } } }',
+                url: "http://docs.mongodb.org/manual/reference/operator/aggregation/group/"
             }
         ],
         "limit": [
             {
-                text: "Sample query 4",
-                url: "http:://test4.com"
+                text: '{ $limit: <positive integer> }',
+                url: "http://docs.mongodb.org/manual/reference/operator/aggregation/limit/"
             }
         ],
         "skip": [
             {
-                text: "Sample query 5aa",
-                url: "http:://test5.com"
-            },
+                text: '{ $skip: <positive integer> }',
+                url: "http://docs.mongodb.org/manual/reference/operator/aggregation/skip/"
+            }
+        ],
+        "sort": [
             {
-                text: "Sample query 5bb",
-                url: "http:://test5.com"
-            },
+                text: '{ $sort: { ftp: 1 } }',
+                url: "http://docs.mongodb.org/manual/reference/operator/aggregation/sort/"
+            }
+        ],
+        "somethingelse": [
             {
                 text: "Sample query 5cc",
                 url: "http:://test5.com"
