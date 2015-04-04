@@ -10,7 +10,7 @@
     "method-override": "^1.0.0",
     "ejs": "~2.3.1",
     "mongodb":"~1.4.35",
-    "mongoskin":"~1.4.13",
+    "mongoose": "*",
     "express-logger":"~0.0.3",
     "morgan": "^1.0.0"
   }
