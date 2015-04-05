@@ -37,7 +37,7 @@
         </div>
         <div class ="row">
             <div class="col-xs-12">
-                <span ng-repeat="facultyObj in facultySchema" class="text-primary"><strong>{{facultyObj.displayName}}: </strong>
+                <span ng-repeat="facultyObj in facultySourceSchema" class="text-primary"><strong>{{facultyObj.displayName}}: </strong>
                 <span class="text-success">{{facultyObj.type}}</span>
                 </span>
             </div>
@@ -51,16 +51,16 @@
         </div>
         <div class ="row">
             <div class="col-xs-12">
-                <span ng-repeat="payRollObj in payRollSchema" class="text-primary"><strong>{{payRollObj.displayName}}: </strong>
+                <span ng-repeat="payRollObj in payRollSourceSchema" class="text-primary"><strong>{{payRollObj.displayName}}: </strong>
                 <span class="text-success">{{payRollObj.type}}</span>
                 </span>
-            </div> 
+            </div>
         </div>
     </div>
     <div ng-include="'partials/queryPartial.html'"></div>
-    
+
     <div class="clear"></div>
-    
+
     <div ng-if="records.length > 0">
         <h2>Results</h2>
         <div id="link"></div>

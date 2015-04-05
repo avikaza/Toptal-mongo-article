@@ -1,27 +1,59 @@
-var Record = function(){    
+var FacultyRecord = function(){
     this.index = 0;
-    this.institution = "";
-    this.category = "";
-    this.state = "";
-    this.position = "";
-    this.avgSalary = "";
-    this.avgRaisePCT = "";
-    this.count = "";
-    this.avgCompensation = "";
-    this.salaryEqualityPCT = "";
+    this.Institution = "";
+    this.Category = "";
+    this.State = "";
+    this.Position = "";
+    this.AvgSalary = "";
+    this.AvgRaisePCT = "";
+    this.Count = "";
+    this.AvgCompensation = "";
+    this.SalaryEqualityPCT = "";
 }
-Record.prototype = {
+FacultyRecord.prototype = {
     translateAttributes: function (index, Obj){
         this.index = index;
-        this.institution = Obj.Institution;
-        this.category = Obj.Category;
-        this.state = Obj.State;
-        this.position = Obj.Position;
-        this.avgSalary = Obj.AvgSalary;
-        this.avgRaisePCT = Obj.AvgRaisePCT;
-        this.count = Obj.Count;
-        this.avgCompensation = Obj.AvgCompensation;
-        this.salaryEqualityPCT = Obj.SalaryEqualityPCT;
+        this.Institution = Obj.Institution;
+        this.Category = Obj.Category;
+        this.State = Obj.State;
+        this.Position = Obj.Position;
+        this.AvgSalary = Obj.AvgSalary;
+        this.AvgRaisePCT = Obj.AvgRaisePCT;
+        this.Count = Obj.Count;
+        this.AvgCompensation = Obj.AvgCompensation;
+        this.SalaryEqualityPCT = Obj.SalaryEqualityPCT;
+        return this;
+    }
+}
+
+var PayRollRecord = function(){
+    this.index = 0;
+    this.State = "";
+    this.GovernmentFunction = "";
+    this.FullTimeEmployees = "";
+    this.VariationPCT = "";
+    this.FullTimePay = "";
+    this.PartTimeEmployees = "";
+    this.PartTimePay = "";
+    this.PartTimeHours = "";
+    this.FullTimeEquivalentEmployment = "";
+    this.TotalEmployees = "";
+    this.TotalMarchPay = "";
+}
+PayRollRecord.prototype = {
+    translateAttributes: function (index, Obj){
+        this.index = index;
+        this.State = Obj.State;
+        this.GovernmentFunction = Obj.GovernmentFunction;
+        this.FullTimeEmployees = Obj.FullTimeEmployees;
+        this.VariationPCT = Obj.VariationPCT;
+        this.FullTimePay = Obj.FullTimePay;
+        this.PartTimeEmployees = Obj.PartTimeEmployees;
+        this.PartTimePay = Obj.PartTimePay;
+        this.PartTimeHours = Obj.PartTimeHours;
+        this.FullTimeEquivalentEmployment = Obj.FullTimeEquivalentEmployment;
+        this.TotalEmployees = Obj.TotalEmployees;
+        this.TotalMarchPay = Obj.TotalMarchPay;
         return this;
     }
 }

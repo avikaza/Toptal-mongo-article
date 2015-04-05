@@ -31,29 +31,54 @@ app.controller('AppCtrl', function ($scope, $http) {
             return (el.index >= startIndex && el.index <= endIndex - 1);
         });
     };
-
-    $scope.facultySchema = [{ field: 'institution', displayName: 'Institution', type: 'String'},
-        { field: 'category', displayName: 'Category', type: 'String'},
-        { field: 'state', displayName: 'State', type: 'String'},
-        { field: 'position', displayName: 'Position', type: 'String'},
-        { field: 'avgSalary', displayName: 'AvgSalary', type: 'Number'},
-        { field: 'avgRaisePCT', displayName: 'AvgRaisePCT', type: 'Number'},
-        { field: 'count', displayName: 'Count', type: 'Number'},
-        { field: 'avgCompensation', displayName: 'AvgCompensation', type: 'Number'},
-        { field: 'salaryEqualityPCT', displayName: 'SalaryEqualityPCT', type: 'Number'}
+    $scope.createFacultySchema = function(resultObject){
+        var i;
+        for(i = 0; i < $scope.facultySourceSchema.length; i = i + 1){
+            if(resultObject.hasOwnProperty($scope.facultySourceSchema[i].field)){
+                $scope.facultySourceSchema[i].isDisplay = true;
+            }else{
+                $scope.facultySourceSchema[i].isDisplay = false;
+            }
+        }
+        $scope.facultySchema = $scope.facultySourceSchema.filter(function(el){
+            return el.isDisplay;
+        });
+    };
+    $scope.createPayRollSchema = function(resultObject){
+        var i;
+        for(i = 0; i < $scope.payRollSourceSchema.length; i = i + 1){
+            if(resultObject.hasOwnProperty($scope.payRollSourceSchema[i].field)){
+                $scope.payRollSourceSchema[i].isDisplay = true;
+            }else{
+                $scope.payRollSourceSchema[i].isDisplay = false;
+            }
+        }
+        $scope.payRollSchema = $scope.payRollSourceSchema.filter(function(el){
+            return el.isDisplay;
+        });
+    };
+    $scope.facultySourceSchema = [{ field: 'Institution', displayName: 'Institution', type: 'String', isDisplay: true},
+        { field: 'Category', displayName: 'Category', type: 'String', isDisplay: true},
+        { field: 'State', displayName: 'State', type: 'String', isDisplay: true},
+        { field: 'Position', displayName: 'Position', type: 'String', isDisplay: true},
+        { field: 'AvgSalary', displayName: 'AvgSalary', type: 'Number', isDisplay: true},
+        { field: 'AvgRaisePCT', displayName: 'AvgRaisePCT', type: 'Number', isDisplay: true},
+        { field: 'Count', displayName: 'Count', type: 'Number', isDisplay: true},
+        { field: 'AvgCompensation', displayName: 'AvgCompensation', type: 'Number', isDisplay: true},
+        { field: 'SalaryEqualityPCT', displayName: 'SalaryEqualityPCT', type: 'Number', isDisplay: true}
     ];
 
-    $scope.payRollSchema = [{ field: 'State', displayName: 'State', type: 'String'},
-        { field: 'GovernmentFunction', displayName: 'GovernmentFunction', type: 'String'},
-        { field: 'FullTimeEmployees', displayName: 'FullTimeEmployees', type: 'Number'},
-        { field: 'VariationPCT', displayName: 'VariationPCT', type: 'Number'},
-        { field: 'FullTimePay', displayName: 'FullTimePay', type: 'Number'},
-        { field: 'PartTimeEmployees', displayName: 'PartTimeEmployees', type: 'Number'},
-        { field: 'PartTimePay', displayName: 'PartTimePay', type: 'Number'},
-        { field: 'PartTimeHours', displayName: 'PartTimeHours', type: 'Number'},
-        { field: 'FullTimeEquivalentEmployment', displayName: 'FullTimeEquivalentEmployment', type: 'Number'},
-        { field: 'TotalEmployees', displayName: 'TotalEmployees', type: 'Number'},
-        { field: 'TotalMarchPay', displayName: 'TotalMarchPay', type: 'Number'}
+    $scope.payRollSourceSchema = [{ field: 'State', displayName: 'State', type: 'String', isDisplay: true},
+        { field: 'GovernmentFunction', displayName: 'GovernmentFunction', type: 'String', isDisplay: true},
+        { field: 'FullTimeEmployees', displayName: 'FullTimeEmployees', type: 'Number', isDisplay: true},
+        { field: 'VariationPCT', displayName: 'VariationPCT', type: 'Number', isDisplay: true},
+        { field: 'FullTimePay', displayName: 'FullTimePay', type: 'Number', isDisplay: true},
+        { field: 'PartTimeEmployees', displayName: 'PartTimeEmployees', type: 'Number', isDisplay: true},
+        { field: 'PartTimePay', displayName: 'PartTimePay', type: 'Number', isDisplay: true},
+        { field: 'PartTimeHours', displayName: 'PartTimeHours', type: 'Number', isDisplay: true},
+        { field: 'FullTimeEquivalentEmployment', displayName: 'FullTimeEquivalentEmployment', type: 'Number', isDisplay: true},
+        { field: 'TotalEmployees', displayName: 'TotalEmployees', type: 'Number', isDisplay: true},
+        { field: 'TotalMarchPay', displayName: 'TotalMarchPay', type: 'Number', isDisplay: true}
     ];
 
     $scope.ngGridView = {
@@ -241,18 +266,20 @@ app.controller('QueryController', function ($scope, $http) {
             open: true
         });
     };
+
     $scope.runAggregation = function () {
-        $scope.consolidateStages();        
+        $scope.consolidateStages();
         var httpRequest = $http({
-            method: 'POST',
-            url: 'http://52.10.36.38:3000/aggregate',
+            method: 'GET',
+            url: 'http://52.10.36.38:3000/collections/faculty',
             data: {collection: $scope.schemaType, statement: $scope.query}
         }).success(function(data, status) {
-            var i, record;            
+            var i, record;
             for(var i = 0; i < data.length; i++){
-                record = new Record();
+                record = new FacultyRecord();
                 $scope.sourceRecords.push(record.translateAttributes(i, data[i]));
             }
+            $scope.createFacultySchema(data[0]);
             $scope.filterData(0, $scope.pageSize);
             $scope.setPagingData($scope.sourceRecords,1,100);
             $scope.showCVSExportDownloadLink();
