@@ -86,7 +86,7 @@ select {
     -webkit-padding-start: 2px;
     -webkit-user-select: none;
     background-image: url(http://i62.tinypic.com/15xvbd5.png), -webkit-linear-gradient(#fafafa, #f4f4f4 40%, #e5e5e5);
-    background-position: 97% center;
+    background-position: 98% center;
     background-repeat: no-repeat;
     border: 1px solid #AAA;
     color: #555;
@@ -95,5 +95,12 @@ select {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    width: 300px;
+    width: 550px;
 }
+
+.vcenter {
+        height: 120px;
+        display: inline-block;
+        vertical-align: middle;
+        padding-top: 35px;            
+        }
