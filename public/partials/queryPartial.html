@@ -1,5 +1,5 @@
 <div ng-controller="QueryController">
-    <h2>Aggregation stages</h2>
+    <h3 class="text-center">Aggregation Stages</h3>
      <accordion close-others="true">
          <accordion-group heading="{{group.title}}" ng-repeat="group in groups" is-open="group.open">
             <accordion-heading>
@@ -34,7 +34,7 @@
         </accordion-group>
     </accordion>
     <div class="container">
-        <button class="btn btn-success btn-xs" data-toggle="collapse" data-target="#queries" ng-click="consolidateStages()">Aggregate Queries</button>
+        <button class="btn btn-success btn-xs" data-toggle="collapse" data-target="#queries" ng-click="consolidateStages()">Customize Query</button>
         <div id="queries" style="width:70%;" class="collapse">
             <textarea class="active primary" style="width:100%;" name="query">{{query}}</textarea>
         </div>

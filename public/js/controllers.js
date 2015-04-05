@@ -171,27 +171,27 @@ app.controller('AppCtrl', function ($scope, $http) {
 app.controller('QueryController', function ($scope, $http) {
     $scope.commandList = [
         {
-            name: "Project",
+            name: "Project (Select raw or calculated columns)",
             command: "$project"
         },
         {
-            name: "Match",
+            name: "Match (Filter rows by conditions on columns)",
             command: "$match"
         },
         {
-            name: "Group",
+            name: "Group (Group by one or more columns and aggregate other columns)",
             command: "$group"
         },
         {
-            name: "Limit",
+            name: "Limit (Get first n rows)",
             command: "$limit"
         },
         {
-            name: "Skip",
+            name: "Skip (Skip first n rows and get remaining)",
             command: "$skip"
         },
         {
-            name: "Sort",
+            name: "Sort (Order by one or more input columns from last stage)",
             command: "$sort"
         }
     ];
