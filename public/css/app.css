@@ -70,6 +70,9 @@
 body{
     padding: 20px;
 }
+h2{
+    text-align: center;
+}
 .headerStyle{
     background-color: #C1C1C1; color: #000000; padding: 5px;
 }
@@ -93,4 +96,4 @@ select {
     text-overflow: ellipsis;
     white-space: nowrap;
     width: 300px;
-]
+}

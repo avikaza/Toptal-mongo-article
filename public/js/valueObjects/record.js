@@ -1,4 +1,4 @@
-var Record = function(){
+var Record = function(){    
     this.index = 0;
     this.institution = "";
     this.category = "";

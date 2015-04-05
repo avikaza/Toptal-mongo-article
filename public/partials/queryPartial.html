@@ -22,7 +22,7 @@
             <accordion-body class="stagebody">
                 <div><textarea ng-model="group.stageQuery"></textarea></div>
                 <div>
-                    <b>Examples:</b>
+                    <b>Example:</b>
                     <div ng-repeat="helpItem in commandHelp[group.stageCommand.substr(1)]">
                         <div>
                             {{helpItem.text}}
@@ -32,16 +32,15 @@
                 </div>
             </accordion-body>
         </accordion-group>
-     </accordion>
-    <div style="border-bottom: 1px solid #c8c8c8;text-align: right; padding-bottom: 2px" class="pull-right">
-        <button class="btn btn-primary btn-xs" ng-click="addNewStage()">Add new stage</button>
-        <button class="btn btn-primary btn-xs" ng-click="runAggregation()">Run Aggregation</button>
-
-    </div>
-<div class="container pull-left">
-      <button class="btn btn-success btn-xs" data-toggle="collapse" data-target="#queries">Aggregate Queries</button>
-      <div id="queries" class="collapse"></br>
-        <textarea class="active primary"cols="70%" name="query"></textarea>
-      </div></div>
-    
+    </accordion>
+    <div class="container">
+        <button class="btn btn-success btn-xs" data-toggle="collapse" data-target="#queries" ng-click="consolidateStages()">Aggregate Queries</button>
+        <div id="queries" style="width:70%;" class="collapse">
+            <textarea class="active primary" style="width:100%;" name="query">{{query}}</textarea>
+        </div>
+        <div class="pull-right">
+            <button class="btn btn-primary btn-xs" ng-click="addNewStage()">Add new stage</button>
+            <button class="btn btn-primary btn-xs" ng-click="runAggregation()">Run Aggregation</button>
+        </div>
+    </div>    
 </div>

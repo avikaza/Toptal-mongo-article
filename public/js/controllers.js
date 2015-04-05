@@ -16,6 +16,7 @@ app.controller('AppCtrl', function ($scope, $http) {
     $scope.totalServerItems = 0;
     $scope.pageSize = 50;
     $scope.schemaType = "Faculty";
+    $scope.displaySchema = [];
     $scope.pagingOptions = {
         pageSizes: [],
         pageSize: $scope.pageSize,
@@ -29,7 +30,7 @@ app.controller('AppCtrl', function ($scope, $http) {
         $scope.records = $scope.sourceRecords.filter(function (el) {
             return (el.index >= startIndex && el.index <= endIndex - 1);
         });
-    }
+    };
 
     $scope.facultySchema = [{ field: 'institution', displayName: 'Institution', type: 'String'},
         { field: 'category', displayName: 'Category', type: 'String'},
@@ -138,7 +139,7 @@ app.controller('AppCtrl', function ($scope, $http) {
         csvHTMLTemplateLink += encodeURIComponent(csvFileDatas);
         csvHTMLTemplateLink += "\" download=\"Export-from-Grid.csv\">Export Data in CSV file</a>";
         $("#link").append(csvHTMLTemplateLink);
-    }
+    };
 
 });
 
@@ -205,20 +206,6 @@ app.controller('QueryController', function ($scope, $http) {
                 text: '{ $sort: { ftp: 1 } }',
                 url: "http://docs.mongodb.org/manual/reference/operator/aggregation/sort/"
             }
-        ],
-        "somethingelse": [
-            {
-                text: "Sample query 5cc",
-                url: "http:://test5.com"
-            },
-            {
-                text: "Sample query 5dd",
-                url: "http:://test5.com"
-            },
-            {
-                text: "Sample query 5ee",
-                url: "http:://test5.com"
-            }
         ]
     };
     $scope.groups = [
@@ -235,7 +222,7 @@ app.controller('QueryController', function ($scope, $http) {
             e.preventDefault();
             e.stopPropagation();
         }
-    }
+    };
     $scope.changeIndex = function(idx, option){
         if(option === "up" && idx > 0){
             $scope.groups.move(idx, idx - 1);
@@ -253,17 +240,16 @@ app.controller('QueryController', function ($scope, $http) {
             stageQuery: "",
             open: true
         });
-    }
+    };
     $scope.runAggregation = function () {
-        $scope.loadData();
-    }
-    $scope.loadData = function() {
+        $scope.consolidateStages();        
         var httpRequest = $http({
-            method: 'GET',
-            url: 'http://52.10.36.38:3000/collections/faculty'
+            method: 'POST',
+            url: 'http://52.10.36.38:3000/aggregate',
+            data: {collection: $scope.schemaType, statement: $scope.query}
         }).success(function(data, status) {
-            var i, record;
-            for(var i = 0; i < data.length; i = i + 1){
+            var i, record;            
+            for(var i = 0; i < data.length; i++){
                 record = new Record();
                 $scope.sourceRecords.push(record.translateAttributes(i, data[i]));
             }
@@ -271,5 +257,12 @@ app.controller('QueryController', function ($scope, $http) {
             $scope.setPagingData($scope.sourceRecords,1,100);
             $scope.showCVSExportDownloadLink();
         });
+    };
+    $scope.consolidateStages = function (){
+        var consolidatedQuery = [];
+        for (var k=0; k < $scope.groups.length; k++){
+            consolidatedQuery.push($scope.groups[k].stageQuery);
+        }
+        $scope.query = "["+consolidatedQuery.toString()+"]";
     };
 });
