@@ -193,9 +193,11 @@ app.controller('QueryController', function ($scope, $http) {
         }else if(option === "down" && idx < $scope.groups.length - 1) {
             $scope.groups.move(idx, idx + 1);
         }
+	$scope.consolidateStages();
     };
     $scope.deletequery = function(idx, e){
         $scope.groups.splice(idx, 1);
+	$scope.consolidateStages();
     };
     $scope.addNewStage = function(){
         $scope.groups.push({
@@ -234,7 +236,9 @@ app.controller('QueryController', function ($scope, $http) {
     $scope.consolidateStages = function (){
         var consolidatedQuery = [];
         for (var k=0; k < $scope.groups.length; k++){
-            consolidatedQuery.push($scope.groups[k].stageQuery);
+		if($scope.groups[k].stageQuery != ""){
+            		consolidatedQuery.push($scope.groups[k].stageQuery);
+		}
         }
         $scope.query = "["+consolidatedQuery.toString()+"]";
     };

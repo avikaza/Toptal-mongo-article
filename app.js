@@ -1,5 +1,4 @@
 var express = require('express'),
-  routes = require('./routes'),
   bodyParser = require('body-parser'),
   http = require('http'),
   path = require('path');
@@ -132,10 +131,6 @@ app.post('/aggregate', function (request,response){
 /**
  * Routes
  */
-
-// serve index and view partials
-//app.get('/', routes.index);
-//app.get('/partials/:name', routes.partials);
 
 
 /**
