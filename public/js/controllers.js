@@ -10,53 +10,8 @@ Array.prototype.move = function (old_index, new_index) {
     return this; // for testing purposes
 };
 app.controller('AppCtrl', function ($scope, $http) {
-    $scope.records = [];
-    $scope.sourceRecords = [];
-    $scope.csvHTMLTemplateLink = "";
-    $scope.totalServerItems = 0;
-    $scope.pageSize = 50;
+
     $scope.schemaType = "Faculty";
-    $scope.displaySchema = [];
-    $scope.pagingOptions = {
-        pageSizes: [],
-        pageSize: $scope.pageSize,
-        currentPage: 1
-    };
-    $scope.filterOptions = {
-        filterText: "",
-        useExternalFilter: true
-    };
-    $scope.filterData = function(startIndex, endIndex){
-        $scope.records = $scope.sourceRecords.filter(function (el) {
-            return (el.index >= startIndex && el.index <= endIndex - 1);
-        });
-    };
-    $scope.createFacultySchema = function(resultObject){
-        var i;
-        for(i = 0; i < $scope.facultySourceSchema.length; i = i + 1){
-            if(resultObject.hasOwnProperty($scope.facultySourceSchema[i].field)){
-                $scope.facultySourceSchema[i].isDisplay = true;
-            }else{
-                $scope.facultySourceSchema[i].isDisplay = false;
-            }
-        }
-        $scope.facultySchema = $scope.facultySourceSchema.filter(function(el){
-            return el.isDisplay;
-        });
-    };
-    $scope.createPayRollSchema = function(resultObject){
-        var i;
-        for(i = 0; i < $scope.payRollSourceSchema.length; i = i + 1){
-            if(resultObject.hasOwnProperty($scope.payRollSourceSchema[i].field)){
-                $scope.payRollSourceSchema[i].isDisplay = true;
-            }else{
-                $scope.payRollSourceSchema[i].isDisplay = false;
-            }
-        }
-        $scope.payRollSchema = $scope.payRollSourceSchema.filter(function(el){
-            return el.isDisplay;
-        });
-    };
     $scope.facultySourceSchema = [{ field: 'Institution', displayName: 'Institution', type: 'String', isDisplay: true},
         { field: 'Category', displayName: 'Category', type: 'String', isDisplay: true},
         { field: 'State', displayName: 'State', type: 'String', isDisplay: true},
@@ -81,16 +36,21 @@ app.controller('AppCtrl', function ($scope, $http) {
         { field: 'TotalMarchPay', displayName: 'TotalMarchPay', type: 'Number', isDisplay: true}
     ];
 
-    $scope.ngGridView = {
-        data: 'records',
-        showFooter: true,
-        columnDefs: 'facultySchema',
-        enablePaging: true,
-        totalServerItems: 'totalServerItems',
-        pagingOptions: $scope.pagingOptions,
-        filterOptions: $scope.filterOptions
-    };
+});
 
+app.controller('QueryController', function ($scope, $http) {
+    $scope.csvHTMLTemplateLink = "";
+    $scope.totalServerItems = 0;
+    $scope.pageSize = 50;
+    $scope.pagingOptions = {
+        pageSizes: [],
+        pageSize: $scope.pageSize,
+        currentPage: 1
+    };
+    $scope.filterOptions = {
+        filterText: "",
+        useExternalFilter: true
+    };
     $scope.setPagingData = function(data, page, pageSize){
         var pagedData = data.slice((page - 1) * pageSize, page * pageSize);
         $scope.totalServerItems = data.length;
@@ -103,23 +63,6 @@ app.controller('AppCtrl', function ($scope, $http) {
             $scope.$apply();
         }
     };
-
-    $scope.getPagedDataAsync = function (pageSize, page, searchText) {
-        $scope.filterData((page > 1? page-1:0)*$scope.pageSize, page*$scope.pageSize);
-    };
-
-    $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
-
-    $scope.$watch('pagingOptions', function (newVal, oldVal) {
-        if (newVal !== oldVal && newVal.currentPage !== oldVal.currentPage) {
-            $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.filterOptions.filterText);
-        }
-    }, true);
-    $scope.$watch('filterOptions', function (newVal, oldVal) {
-        if (newVal !== oldVal) {
-            $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.filterOptions.filterText);
-        }
-    }, true);
 
     $scope.showCVSExportDownloadLink = function() {
         var keyCollections = [];
@@ -150,7 +93,7 @@ app.controller('AppCtrl', function ($scope, $http) {
             csvFileDatas += '"' + StringifyCSVData(keyCollections[k]) + '",';
         }
         csvFileDatas = swapLastCommaForNewline(csvFileDatas);
-        var getGridData = $scope.sourceRecords;
+        var getGridData = $scope.results;
         for (var gridRow in getGridData) {
             for (k in keyCollections) {
                 var currentReowCell;
@@ -165,10 +108,6 @@ app.controller('AppCtrl', function ($scope, $http) {
         csvHTMLTemplateLink += "\" download=\"Export-from-Grid.csv\">Export Data in CSV file</a>";
         $("#link").append(csvHTMLTemplateLink);
     };
-
-});
-
-app.controller('QueryController', function ($scope, $http) {
     $scope.commandList = [
         {
             name: "Project (Select raw or calculated columns)",
@@ -266,24 +205,31 @@ app.controller('QueryController', function ($scope, $http) {
             open: true
         });
     };
-
+    $scope.results = [];
+    $scope.colDefinitions = [];
     $scope.runAggregation = function () {
-        $scope.consolidateStages();
         var httpRequest = $http({
-            method: 'GET',
-            url: 'http://52.10.36.38:3000/collections/faculty',
+            method: 'POST',
+            url: 'http://52.10.36.38:3000/aggregate',
             data: {collection: $scope.schemaType, statement: $scope.query}
         }).success(function(data, status) {
-            var i, record;
-            for(var i = 0; i < data.length; i++){
-                record = new FacultyRecord();
-                $scope.sourceRecords.push(record.translateAttributes(i, data[i]));
-            }
-            $scope.createFacultySchema(data[0]);
-            $scope.filterData(0, $scope.pageSize);
-            $scope.setPagingData($scope.sourceRecords,1,100);
-            $scope.showCVSExportDownloadLink();
+	    $scope.results = data;
+            if(data.length > 0){
+	    	for(var index in data[0]){
+	    		var definitions = {};
+			definitions['field'] = index;
+			definitions['displayName'] = index.toUpperCase();
+			$scope.colDefinitions.push(definitions);
+	   	}
+	     }else{
+	    	$scope.results.push({result:"Please check your query and if the collection contains the query parameters."});
+		$scope.colDefinitions.push({field :"result", displayName:"No Results were found"});
+	     }	
         });
+    };
+    $scope.ngGridView = {
+       	data: 'results',
+	columnDefs: 'colDefinitions'
     };
     $scope.consolidateStages = function (){
         var consolidatedQuery = [];

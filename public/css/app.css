@@ -70,7 +70,7 @@
 body{
     padding: 20px;
 }
-h2{
+h2,h3{
     text-align: center;
 }
 .headerStyle{
@@ -103,4 +103,4 @@ select {
         display: inline-block;
         vertical-align: middle;
         padding-top: 35px;            
-        }
+}

@@ -1,5 +1,5 @@
 <div ng-controller="QueryController">
-    <h3 class="text-center">Aggregation Stages</h3>
+    <h3>Aggregation Stages</h3>
      <accordion close-others="true">
          <accordion-group heading="{{group.title}}" ng-repeat="group in groups" is-open="group.open">
             <accordion-heading>
@@ -20,27 +20,32 @@
                 </div>
             </accordion-heading>
             <accordion-body class="stagebody">
-                <div><textarea ng-model="group.stageQuery"></textarea></div>
+                <div><textarea ng-model="group.stageQuery" ng-change="consolidateStages()"></textarea></div>
                 <div>
                     <b>Example:</b>
                     <div ng-repeat="helpItem in commandHelp[group.stageCommand.substr(1)]">
                         <div>
                             {{helpItem.text}}
                         </div>
-                        <a ng-click="group.stageQuery=helpItem.text" style="cursor: pointer">Use</a>  | <a ng-href="{{helpItem.url}}" target="_blank">help</a>
+                        <a ng-click="group.stageQuery=helpItem.text;consolidateStages();" style="cursor: pointer">Use</a>  | <a ng-href="{{helpItem.url}}" target="_blank">Help</a>
                     </div>
                 </div>
             </accordion-body>
         </accordion-group>
     </accordion>
-    <div class="container">
-        <button class="btn btn-success btn-xs" data-toggle="collapse" data-target="#queries" ng-click="consolidateStages()">Customize Query</button>
-        <div id="queries" style="width:70%;" class="collapse">
-            <textarea class="active primary" style="width:100%;" name="query">{{query}}</textarea>
-        </div>
-        <div class="pull-right">
-            <button class="btn btn-primary btn-xs" ng-click="addNewStage()">Add new stage</button>
-            <button class="btn btn-primary btn-xs" ng-click="runAggregation()">Run Aggregation</button>
-        </div>
-    </div>    
+    <div class="pull-right">
+    	<button class="btn btn-primary btn-xs" ng-click="addNewStage()">Add new stage</button>
+    </div>
+    <div style="vertical-align:middle;margin-top:10px;">
+	<label for="query">Customize Query :</label> 
+    	<textarea class="active primary" style="width:100%;" id="query" name="query" ng-model="query">{{query}}</textarea>
+    	<div class="pull-right">
+        	<button class="btn btn-primary btn-xs" ng-click="runAggregation()">Run Aggregation</button>
+    	</div>
+    </div>
+    <div ng-if="results.length > 0">
+        <h3>Query Results</h3>
+        <div id="link"></div>
+        <div class="ngGridStyle" ng-grid="ngGridView"></div>
+    </div>
 </div>
