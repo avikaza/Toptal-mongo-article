@@ -66,12 +66,12 @@ app.controller('QueryController', function ($scope, $http) {
 
     $scope.showCVSExportDownloadLink = function() {
         var keyCollections = [];
-        for (var grd in $scope.myColumns) {
-            keyCollections.push($scope.myColumns[grd].field);
+        for (var grd in $scope.colDefinitions) {
+            keyCollections.push($scope.colDefinitions[grd].field);
         }
         var csvFileDatas = '';
         function StringifyCSVData(strKey) {
-            if (strKey == null) { // we want to catch anything null-ish, hence just == not ===
+            if (strKey == null || strKey == undefined) { // we want to catch anything null-ish, hence just == not ===
                 return '';
             }
             if (typeof (strKey) === 'number') {
@@ -83,7 +83,7 @@ app.controller('QueryController', function ($scope, $http) {
             if (typeof (strKey) === 'string') {
                 return strKey.replace(/"/g, '""');
             }
-            return JSON.stringify(strKey).replace(/"/g, '""');
+            return JSON.stringify(strKey) !== undefined? JSON.stringify(strKey).replace(/"/g, '""'):"";
         }
         function swapLastCommaForNewline(strKey) {
             var newStr = strKey.substr(0, strKey.length - 1);
@@ -106,7 +106,7 @@ app.controller('QueryController', function ($scope, $http) {
         var csvHTMLTemplateLink = "<a href=\"data:text/csv;charset=UTF-8,";
         csvHTMLTemplateLink += encodeURIComponent(csvFileDatas);
         csvHTMLTemplateLink += "\" download=\"Export-from-Grid.csv\">Export Data in CSV file</a>";
-        $("#link").append(csvHTMLTemplateLink);
+        $("#exportLink").html(csvHTMLTemplateLink);
     };
     $scope.commandList = [
         {
@@ -217,12 +217,15 @@ app.controller('QueryController', function ($scope, $http) {
         }).success(function(data, status) {
 	    $scope.results = data;
             if(data.length > 0){
+                $scope.colDefinitions = [];
 	    	for(var index in data[0]){
 	    		var definitions = {};
 			definitions['field'] = index;
 			definitions['displayName'] = index.toUpperCase();
 			$scope.colDefinitions.push(definitions);
 	   	}
+
+                setTimeout($scope.showCVSExportDownloadLink, 1000);
 	     }else{
 	    	$scope.results.push({result:"Please check your query and if the collection contains the query parameters."});
 		$scope.colDefinitions.push({field :"result", displayName:"No Results were found"});
