@@ -210,12 +210,12 @@ app.controller('QueryController', function ($scope, $http) {
     $scope.results = [];
     $scope.colDefinitions = [];
     $scope.runAggregation = function () {
-        var httpRequest = $http({
-            method: 'POST',
-            url: 'http://52.10.36.38:3000/aggregate',
-            data: {collection: $scope.schemaType, statement: $scope.query}
+        var url='http://52.10.36.38:3000/aggregate?collection='+$scope.schemaType+'&statement='+$scope.query;
+	var httpRequest = $http({
+            method: 'GET',
+            url: url 
         }).success(function(data, status) {
-	    $scope.results = data;
+		$scope.results = data;
             if(data.length > 0){
                 $scope.colDefinitions = [];
 	    	for(var index in data[0]){

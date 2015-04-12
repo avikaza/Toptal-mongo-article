@@ -98,12 +98,8 @@ app.get('/', function (request,response){
 });
 
 app.get('/aggregate', function (request,response){
-	response.render('aggregate.html');
-});
-
-app.post('/aggregate', function (request,response){
-	var query = request.body.statement;
-	var model = request.body.collection;
+	var query = request.param('statement');
+	var model = request.param('collection');
 	var json = eval('('+query+')');
 	if(model == 'Payroll'){
 		Payroll.aggregate(json, function (err, result){
