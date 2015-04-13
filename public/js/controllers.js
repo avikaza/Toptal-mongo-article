@@ -137,37 +137,43 @@ app.controller('QueryController', function ($scope, $http) {
     $scope.commandHelp = {
         "project": [
             {
-                text: '{ $project : { Institution : "institution name" , AvgSalary : 5000 } }',
+                text: "{ $project : { _id: 0, employeeId: 1, firstName : '$name.first',  lastName : '$name.last', last4Social: { $substr: [ '$social', 6, 4 ] }, 'TotalBenefits' : {$add : ['$salary', '$bonus', '$insurance']}}",
+                explanation: "User wants to suppress the default _id primary key from coming in results, he wants the employeeId, first name, last name, last 4 digits of social and total benefits by summing up employee salary, bonus and insurance fields",
                 url: "http://docs.mongodb.org/manual/reference/operator/aggregation/project/#pipe._S_project"
             }
         ],
         "match": [
             {
-                text: '{ $match: { ftp: { $gte: 100*1000 } } }',
+                text: "{ $match : { employeeCity: {$in : ['Arlington', 'Dallas', 'Sacremento']}, salary : { $gt : 30000, $lte : 80000}, department : 'Sales'} }",
+                explanation: "Here user is trying to get all sales employees who are based in Alrington, Dallas, and Sacremento with salaries between 30,000 and 80,000. Always try and use $match as early as possible in your stages because it reduces the amount of data we have to run other transformations on",
                 url: "http://docs.mongodb.org/manual/reference/operator/aggregation/match/"
             }
         ],
         "group": [
             {
-                text: '{ $group: { _id: "$State", ftp: { $sum: "$AvgSalary" } } }',
+                text: "{ $group: { _id: { department: '$department', city: '$employeeCity'}, AvgSalary: {$avg: '$salary'}, MaxSalary: {$max: '$salary'}, MinSalary: {$min: '$salary'}, Count: {$sum: 1} } }",
+                explanation: "This will give us count of employees and their salary averages, max and mins grouped by city and department",
                 url: "http://docs.mongodb.org/manual/reference/operator/aggregation/group/"
             }
         ],
         "limit": [
             {
-                text: '{ $limit: <positive integer> }',
+                text: '{ $limit: 120 }',
+                explanation: "To return only first 120 documents of the result-set",
                 url: "http://docs.mongodb.org/manual/reference/operator/aggregation/limit/"
             }
         ],
         "skip": [
             {
-                text: '{ $skip: <positive integer> }',
+                text: '{ $skip: 100 }',
+                explanation: "To ignore first 100 documents and return remaining result-set",
                 url: "http://docs.mongodb.org/manual/reference/operator/aggregation/skip/"
             }
         ],
         "sort": [
             {
-                text: '{ $sort: { ftp: 1 } }',
+                text: '{ $sort: { salary: -1 } }',
+                explanation: "Sort the result-set in descending order of salary",
                 url: "http://docs.mongodb.org/manual/reference/operator/aggregation/sort/"
             }
         ]
