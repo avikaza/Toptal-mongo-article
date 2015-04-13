@@ -27,11 +27,12 @@
                         <div>
                             {{helpItem.text}}
                         </div>
+                        <a ng-click="group.stageQuery=helpItem.text;consolidateStages();" style="cursor: pointer">Use</a>  | <a ng-href="{{helpItem.url}}" target="_blank">Help</a>
+                        <br><br>
                         <div>
                            <b>Explanation:</b>
                             <div>{{helpItem.explanation}}</div>
                         </div>
-                        <a ng-click="group.stageQuery=helpItem.text;consolidateStages();" style="cursor: pointer">Use</a>  | <a ng-href="{{helpItem.url}}" target="_blank">Help</a>
                     </div>
                 </div>
             </accordion-body>
