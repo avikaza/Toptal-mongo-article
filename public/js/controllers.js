@@ -12,7 +12,7 @@ Array.prototype.move = function (old_index, new_index) {
 app.controller('AppCtrl', function ($scope, $http) {
 
     $scope.schemaType = "Faculty";
-    $scope.facultySourceSchema = [{field: 'UnitID', displayName: 'UnitID', type :'String', isDisplay: true},
+    $scope.facultySourceSchema = [{field: 'UnitID', displayName: 'UnitID', type :'String', isDisplay: false},
         {field: 'InstitutionName', displayName: 'InstitutionName', type :'String', isDisplay: true},
         {field: 'AVGSalaryAll', displayName: 'AVGSalaryAll', type :'Number', isDisplay: true},
         {field: 'AVGSalaryProfessors', displayName: 'AVGSalaryProfessors', type :'Number', isDisplay: true},
@@ -23,8 +23,8 @@ app.controller('AppCtrl', function ($scope, $http) {
         {field: 'State', displayName: 'State', type :'String', isDisplay: true},
         {field: 'ZIPCode', displayName: 'ZIPCode', type :'String', isDisplay: true},
         {field: 'AVGSalaryInstructors', displayName: 'AVGSalaryInstructors', type :'Number', isDisplay: true},
-        {field: 'MenStaffCount', displayName: 'MenInstructionalStaff', type :'Number', isDisplay: true},
-        {field: 'WomenStaffCount', displayName: 'WomenInstructionalStaff', type :'Number', isDisplay: true}
+        {field: 'MenStaffCount', displayName: 'MenStaffCount', type :'Number', isDisplay: true},
+        {field: 'WomenStaffCount', displayName: 'MenStaffCount', type :'Number', isDisplay: true}
     ];
     $scope.payRollSourceSchema = [{ field: 'State', displayName: 'State', type: 'String', isDisplay: true},
         { field: 'GovernmentFunction', displayName: 'GovernmentFunction', type: 'String', isDisplay: true},
