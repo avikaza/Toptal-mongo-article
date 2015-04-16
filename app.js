@@ -16,15 +16,20 @@ var db = mongoose.connection,
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function callback() {
 	var FacultySchema = mongoose.Schema({
-		Institution : String,
-		Category : String,
+		UnitID : String,
+		InstitutionName : String,
+		AvgSalaryAll : Number,
+		AVGSalaryProfessors : Number,
+		AVGSalaryAssociateProfessors : Number,
+		AVGSalaryAssistantProfessors : Number,
+		AVGSalaryLecturers : Number,
+		AVGSalaryInstructors : Number,
+		StreetAddress : String,
+		City : String,
 		State : String,
-		Position : String,
-		AvgSalary : Number,
-		AvgRaisePCT : Number,
-		Count : Number,
-		AvgCompensation : Number,
-		SalaryEqualityPCT : Number
+		ZIPCode : String,
+		MenStaffCount : Number,
+		WomenStaffCount : Number
 	}, {collection: 'faculty'});
 	Faculty = db.model('faculty', FacultySchema);
 
