@@ -24,7 +24,7 @@ app.controller('AppCtrl', function ($scope, $http) {
         {field: 'ZIPCode', displayName: 'ZIPCode', type :'String', isDisplay: true},
         {field: 'AVGSalaryInstructors', displayName: 'AVGSalaryInstructors', type :'Number', isDisplay: true},
         {field: 'MenStaffCount', displayName: 'MenStaffCount', type :'Number', isDisplay: true},
-        {field: 'WomenStaffCount', displayName: 'MenStaffCount', type :'Number', isDisplay: true}
+        {field: 'WomenStaffCount', displayName: 'WomenStaffCount', type :'Number', isDisplay: true}
     ];
     $scope.payRollSourceSchema = [{ field: 'State', displayName: 'State', type: 'String', isDisplay: true},
         { field: 'GovernmentFunction', displayName: 'GovernmentFunction', type: 'String', isDisplay: true},
