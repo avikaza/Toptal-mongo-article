@@ -1,6 +1,6 @@
 <div ng-controller="QueryController">
-    <h3>Aggregation Stages</h3>
-     <accordion close-others="true">
+    <h3 >Aggregation Stages</h3>
+     <accordion close-others="true" draggable>
          <accordion-group heading="{{group.title}}" ng-repeat="group in groups" is-open="group.open">
             <accordion-heading>
                 <div>
@@ -11,10 +11,11 @@
                     </div>
 
                     <div class="pull-right">
-                        <i class="glyphicon glyphicon-chevron-up"  ng-click="stopExpanding($event); changeIndex($index, 'up');"></i>
-                        <i class="glyphicon glyphicon-chevron-down"  ng-click="stopExpanding($event); changeIndex($index, 'down');"></i>
-                        <i class="glyphicon" ng-class="{'glyphicon-minus-sign': group.open, 'glyphicon-plus-sign': !group.open}"></i>
-                        <i class="glyphicon glyphicon-remove" ng-click="stopExpanding($event); deletequery($index);"></i>
+                        <i class="glyphicon glyphicon-move" title="Hold and drag"></i>
+                        <!--<i class="glyphicon glyphicon-chevron-up"  ng-click="stopExpanding($event); changeIndex($index, 'up');"></i>
+                        <i class="glyphicon glyphicon-chevron-down"  ng-click="stopExpanding($event); changeIndex($index, 'down');"></i>-->
+                        <i class="glyphicon" ng-class="{'glyphicon-minus-sign': group.open, 'glyphicon-plus-sign': !group.open}" title="Expand/Collapse"></i>
+                        <i class="glyphicon glyphicon-remove" ng-click="stopExpanding($event); deletequery($index);" title="Delete"></i>
                     </div>
                     <div class="clear"></div>
                 </div>
