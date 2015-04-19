@@ -12,8 +12,7 @@ Array.prototype.move = function (old_index, new_index) {
 app.controller('AppCtrl', function ($scope, $http) {
 
     $scope.schemaType = "Faculty";
-    $scope.facultySourceSchema = [{field: 'UnitID', displayName: 'UnitID', type :'String', isDisplay: false},
-        {field: 'InstitutionName', displayName: 'InstitutionName', type :'String', isDisplay: true},
+    $scope.facultySourceSchema = [{field: 'InstitutionName', displayName: 'InstitutionName', type :'String', isDisplay: true},
         {field: 'AVGSalaryAll', displayName: 'AVGSalaryAll', type :'Number', isDisplay: true},
         {field: 'AVGSalaryProfessors', displayName: 'AVGSalaryProfessors', type :'Number', isDisplay: true},
         {field: 'AVGSalaryAssociateProfessors', displayName: 'AVGSalaryAssociateProfessors', type :'Number', isDisplay: true},
