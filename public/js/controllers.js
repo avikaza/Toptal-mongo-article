@@ -231,6 +231,9 @@ app.controller('QueryController', function ($scope, $http) {
 	    		var definitions = {};
 			definitions['field'] = index;
 			definitions['displayName'] = index.toUpperCase();
+			if(index === "_id"){
+				definitions['visible'] = false;
+			}
 			$scope.colDefinitions.push(definitions);
 	   	}
 
