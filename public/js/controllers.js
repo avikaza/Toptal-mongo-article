@@ -218,7 +218,7 @@ app.controller('QueryController', function ($scope, $http) {
     $scope.results = [];
     $scope.colDefinitions = [];
     $scope.runAggregation = function () {
-        var url='http://52.10.36.38:3000/aggregate?collection='+$scope.schemaType+'&statement='+$scope.query;
+        var url='http://54.68.6.190:3000/aggregate?collection='+$scope.schemaType+'&statement='+$scope.query;
 	var httpRequest = $http({
             method: 'GET',
             url: url 
